@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Example/">
+    <Project Path="RonSijm.MediumAPI.Example/RonSijm.MediumAPI.Example.csproj" />
+    <Project Path="RonSijm.MediumAPI.Example.IntegrationTest/RonSijm.MediumAPI.Example.IntegrationTest.csproj" />
+  </Folder>
+  <Folder Name="/Diagnostics/">
+    <Project Path="Diagnostics/Example.ENDPOINT001.RouteParameterMissingFromHandler/Example.ENDPOINT001.RouteParameterMissingFromHandler.csproj" />
+    <Project Path="Diagnostics/Example.ENDPOINT002.HandlerParameterMissingFromRoute/Example.ENDPOINT002.HandlerParameterMissingFromRoute.csproj" />
+    <Project Path="Diagnostics/Example.ENDPOINT003.RouteConstraintTypeMismatch/Example.ENDPOINT003.RouteConstraintTypeMismatch.csproj" />
+    <Project Path="Diagnostics/Example.ENDPOINT005.PatternMissingStringSyntax/Example.ENDPOINT005.PatternMissingStringSyntax.csproj" />
+    <Project Path="Diagnostics/Example.ENDPOINT007.HandleAsyncMethodMissing/Example.ENDPOINT007.HandleAsyncMethodMissing.csproj" />
+  </Folder>
+</Solution>

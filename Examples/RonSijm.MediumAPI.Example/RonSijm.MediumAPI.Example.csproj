@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Main\RonSijm.MediumAPI\RonSijm.MediumAPI.csproj" />
+		<ProjectReference Include="..\..\src\Main\RonSijm.MediumAPI.Analyser\RonSijm.MediumAPI.Analyser.csproj"
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+</Project>

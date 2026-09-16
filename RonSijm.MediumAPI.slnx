@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Main/">
+    <Project Path="src/Main/RonSijm.MediumAPI/RonSijm.MediumAPI.csproj" />
+    <Project Path="src/Main/RonSijm.MediumAPI.Analyser/RonSijm.MediumAPI.Analyser.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="src/Tests/RonSijm.MediumAPI.Analyser.Tests/RonSijm.MediumAPI.Analyser.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Examples/">
+    <Project Path="Examples/RonSijm.MediumAPI.Example/RonSijm.MediumAPI.Example.csproj" />
+    <Project Path="Examples/RonSijm.MediumAPI.Example.IntegrationTest/RonSijm.MediumAPI.Example.IntegrationTest.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Diagnostics/">
+    <Project Path="Examples/Diagnostics/Example.ENDPOINT001.RouteParameterMissingFromHandler/Example.ENDPOINT001.RouteParameterMissingFromHandler.csproj" />
+    <Project Path="Examples/Diagnostics/Example.ENDPOINT002.HandlerParameterMissingFromRoute/Example.ENDPOINT002.HandlerParameterMissingFromRoute.csproj" />
+    <Project Path="Examples/Diagnostics/Example.ENDPOINT003.RouteConstraintTypeMismatch/Example.ENDPOINT003.RouteConstraintTypeMismatch.csproj" />
+    <Project Path="Examples/Diagnostics/Example.ENDPOINT005.PatternMissingStringSyntax/Example.ENDPOINT005.PatternMissingStringSyntax.csproj" />
+    <Project Path="Examples/Diagnostics/Example.ENDPOINT007.HandleAsyncMethodMissing/Example.ENDPOINT007.HandleAsyncMethodMissing.csproj" />
+  </Folder>
+</Solution>

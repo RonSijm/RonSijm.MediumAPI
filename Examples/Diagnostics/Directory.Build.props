@@ -1,0 +1,14 @@
+<Project>
+  <!-- Import the parent Examples/Directory.Build.props for shared TargetFramework etc. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <!-- Shared configuration inherited by all diagnostic example projects -->
+  <ItemGroup>
+    <!-- Required because the source generator emits MapMediumApiEndpoints which uses ASP.NET Core types -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\..\..\src\Main\RonSijm.MediumAPI\RonSijm.MediumAPI.csproj" />
+    <ProjectReference Include="..\..\..\src\Main\RonSijm.MediumAPI.Analyser\RonSijm.MediumAPI.Analyser.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+</Project>
