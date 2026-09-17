@@ -308,6 +308,14 @@ public sealed class EndpointRouteAnalyzer : DiagnosticAnalyzer
 			return true;
 		}
 
+		// Complex reference types (DTOs/records) are bound from the request body, same as
+		// vanilla Minimal APIs - they are never expected to appear in the route pattern.
+		// `string` is excluded because it is a valid route/query parameter type.
+		if (type.TypeKind == TypeKind.Class && type.SpecialType != SpecialType.System_String)
+		{
+			return true;
+		}
+
 		if (parameter.Name.Equals("endpoint", StringComparison.OrdinalIgnoreCase))
 		{
 			return true;

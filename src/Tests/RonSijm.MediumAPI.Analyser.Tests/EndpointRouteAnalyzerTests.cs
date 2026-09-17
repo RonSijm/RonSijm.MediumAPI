@@ -105,6 +105,31 @@ public sealed class EndpointRouteAnalyzerTests
 		Assert.DoesNotContain(diagnostics, d => d.Id == EndpointDiagnosticIds.HandlerParameterMissingFromRoute);
 	}
 
+	[Fact]
+	public async Task ENDPOINT002_HandlerHasComplexBodyParameter_NoReport()
+	{
+		const string source = """
+			using System.Diagnostics.CodeAnalysis;
+			using System.Threading;
+			using System.Threading.Tasks;
+			using RonSijm.MediumAPI;
+
+			internal sealed record CreateItemRequest(string Name);
+
+			internal sealed class CreateItemEndpoint : IEndpointAdapter
+			{
+			    public HttpVerb Verb => HttpVerb.Post;
+			    [StringSyntax("Route")]
+			    public string Pattern => "items";
+			    public Task HandleAsync(CreateItemRequest request, CancellationToken cancellationToken) => Task.CompletedTask;
+			}
+			""";
+
+		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
+
+		Assert.DoesNotContain(diagnostics, d => d.Id == EndpointDiagnosticIds.HandlerParameterMissingFromRoute);
+	}
+
 	// ──────────────────────────────────────────────────────────────
 	// ENDPOINT003 — route constraint type mismatch
 	// ──────────────────────────────────────────────────────────────

@@ -10,4 +10,9 @@
     <Project Path="Diagnostics/Example.ENDPOINT005.PatternMissingStringSyntax/Example.ENDPOINT005.PatternMissingStringSyntax.csproj" />
     <Project Path="Diagnostics/Example.ENDPOINT007.HandleAsyncMethodMissing/Example.ENDPOINT007.HandleAsyncMethodMissing.csproj" />
   </Folder>
+  <Folder Name="/Comparison/">
+    <Project Path="Comparison/Comparison.Controllers/Comparison.Controllers.csproj" />
+    <Project Path="Comparison/Comparison.MinimalApi/Comparison.MinimalApi.csproj" />
+    <Project Path="Comparison/Comparison.MediumApi/Comparison.MediumApi.csproj" />
+  </Folder>
 </Solution>
