@@ -1,19 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
-using Comparison.MediumApi.Data;
-using Comparison.MediumApi.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using RonSijm.MediumAPI;
 
-namespace Comparison.MediumApi.Endpoints.Pizzas;
+namespace Comparison.MediumApi.Features.Pizza;
 
-internal sealed class GetPizzaByIdEndpoint : IEndpointAdapter
+internal sealed class GetPizzaByIdEndpoint(PizzaStore store) : IGetEndpoint<int, Results<Ok<Pizza>, NotFound>>
 {
-	private readonly PizzaStore store;
-
-	public GetPizzaByIdEndpoint(PizzaStore store) => this.store = store;
-
-	public HttpVerb Verb => HttpVerb.Get;
-
 	[StringSyntax("Route")]
 	public string Pattern => "pizzas/{id:int}";
 

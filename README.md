@@ -1,12 +1,10 @@
 # RonSijm.MediumAPI
 
-A class-based endpoint framework for ASP.NET Core Minimal APIs. Write one class per endpoint; a Roslyn source generator scans your compilation for `IEndpointAdapter` implementations and emits the `app.MapGet(...)`-style registration for you, while a companion analyzer checks that each route pattern and handler actually agree with each other at build time.
+A class-based endpoint framework for ASP.NET Core Minimal APIs. Write one class per endpoint; a Roslyn source generator scans your compilation for `IEndpoint` implementations and emits the `app.MapGet(...)`-style registration for you, while a companion analyzer checks that each route pattern and handler actually agree with each other at build time.
 
 ```csharp
-internal sealed class HelloWorldEndpoint : IEndpointAdapter
+internal sealed class HelloWorldEndpoint : IGetEndpoint<Ok<string>>
 {
-    public HttpVerb Verb => HttpVerb.Get;
-
     [StringSyntax("Route")]
     public string Pattern => "hello";
 
@@ -21,13 +19,15 @@ builder.Services.AddMediumApiEndpoints();
 app.MapMediumApiEndpoints();
 ```
 
-Implementing `IEndpointAdapter` *is* the registration: the generator finds the class at build time and wires it into routing for you, the same way it would if you'd hand-written the `MapGet` call yourself. There's no `services.AddScoped<HelloWorldEndpoint>()` to remember, and no separate line that can quietly go missing when a route stops working.
+Implementing `IEndpoint` *is* the registration: the generator finds the class at build time and wires it into routing for you, the same way it would if you'd hand-written the `MapGet` call yourself. There's no `services.AddScoped<HelloWorldEndpoint>()` to remember, and no separate line that can quietly go missing when a route stops working.
+
+`IGetEndpoint<TOut>` above is one of a family of per-verb interfaces (`IGetEndpoint`, `IPostEndpoint`, `IPutEndpoint`, `IPatchEndpoint`, `IDeleteEndpoint`, `IHeadEndpoint`, `IOptionsEndpoint`, `ITraceEndpoint`). Each one is nothing more than `IEndpoint` with `Verb` pre-filled, so you stop repeating `public HttpVerb Verb => HttpVerb.Get;` on every class - the interface name already says it. The `<TOut>` and `<TIn, TOut>` generic variants go a step further and pin down the `HandleAsync` signature itself (no input, or a single input, plus a `CancellationToken`), so a handler that doesn't match its own declared shape is a compile error, not a `HandleAsync` typo the generator quietly skips. Endpoints that need more than one input parameter (a route id *and* a request body, say) keep implementing the plain, non-generic verb interface with a free-form `HandleAsync`, exactly like before.
 
 ## Packages
 
 | Package | Description |
 |---|---|
-| `RonSijm.MediumAPI` | Core interfaces (`IEndpointAdapter`, `HttpVerb`) - no ASP.NET Core dependency |
+| `RonSijm.MediumAPI` | Core interfaces (`IEndpoint`, the per-verb `I*Endpoint` family, `HttpVerb`) - no ASP.NET Core dependency |
 | `RonSijm.MediumAPI.Analyser` | Roslyn source generator (`AddMediumApiEndpoints` / `MapMediumApiEndpoints`) and diagnostic analyzer |
 
 ## Concepts
@@ -50,7 +50,7 @@ If you who want the verdict before the argument:
 | **Open–Closed** | ⚠️ Existing controller grows as new actions are added | ⚠️ New lambdas added independently, but scattered | ✅ New action = new class; existing classes are never touched |
 | **Cohesion / vertical slices** | ⚠️ Often grouped by resource noun, even with unrelated dependencies | ⚠️ Grouped by registration call site | ✅ Each endpoint is a self-contained, independently testable slice |
 | **Boundary isolation** | ⚠️ Shared class scope makes accidental coupling between actions easy | ✅ Separate delegates; no shared class scope | ✅ Separate classes; accidental coupling requires an explicit dependency |
-| **Framework abstraction** | ⚠️ Coupled to MVC concepts: `ControllerBase`, filters, attributes | ❌ Tightly coupled to the `IEndpointRouteBuilder` call site | ✅ Registration abstracted behind `IEndpointAdapter`; HTTP result types are still ASP.NET Core |
+| **Framework abstraction** | ⚠️ Coupled to MVC concepts: `ControllerBase`, filters, attributes | ❌ Tightly coupled to the `IEndpointRouteBuilder` call site | ✅ Registration abstracted behind `IEndpoint`; HTTP result types are still ASP.NET Core |
 | **Endpoint registration** | ⚠️ Automatic via MVC `ApplicationParts` (reflection at startup) | ⚠️ Manual `app.MapGet(...)` call per endpoint | ✅ Source-generated at compile time; output inspectable in `obj/.../Generated` |
 | **Route ⇄ handler mismatches** | ❌ Not caught by the compiler; surfaces at runtime | ❌ Not caught by the compiler; surfaces at runtime | ✅ Build error (`ENDPOINT001`–`ENDPOINT008`) |
 | **Unit testing** | ⚠️ Needs `ControllerContext` / MVC pipeline for filters to run | ✅ Trivial - it's a delegate, call it directly | ✅ Trivial - plain class, `new` it and call `HandleAsync` |
@@ -68,7 +68,7 @@ Minimal APIs are intentionally unopinionated. That's a feature for small APIs, a
 
 Minimal APIs do have `.Produces<T>()`, `.WithOpenApi()`, typed results, and endpoint metadata, and this has improved significantly since .NET 6 - the issue was never that support is missing, it's that without team-wide conventions this metadata (and the registration calls themselves) become scattered and inconsistent as the number of routes grows. Freedom is great until forty developers each use it differently.
 
-MediumAPI answers these with one convention: **an endpoint is a class implementing `IEndpointAdapter`.** Nothing else changes about how you write the handler body - the class still ultimately compiles down to the same `RequestDelegate` machinery ASP.NET Core uses for any other Minimal API. You're not buying a new engine, you're buying lane markings.
+MediumAPI answers these with one convention: **an endpoint is a class implementing `IEndpoint`.** Nothing else changes about how you write the handler body - the class still ultimately compiles down to the same `RequestDelegate` machinery ASP.NET Core uses for any other Minimal API. You're not buying a new engine, you're buying lane markings.
 
 ## Why not just use Controllers?
 
@@ -92,7 +92,7 @@ An endpoint class is made for a single action. Once it's implemented, the file c
 
 ### Cohesion / vertical slices
 
-A **vertical slice** organizes code by *feature* rather than by *technical layer* - everything needed to fulfill one request lives together. A controller often groups actions by resource noun even when those actions have different dependencies, different validation, and different reasons to change; that's a horizontal (layer-based) cut that works against feature isolation, dressed up to look like organization. Each `IEndpointAdapter` implementation is a single-action vertical slice: it has exactly the dependencies it needs and is independently testable without pulling in the concerns of sibling actions it has never met and shouldn't have to.
+A **vertical slice** organizes code by *feature* rather than by *technical layer* - everything needed to fulfill one request lives together. A controller often groups actions by resource noun even when those actions have different dependencies, different validation, and different reasons to change; that's a horizontal (layer-based) cut that works against feature isolation, dressed up to look like organization. Each `IEndpoint` implementation is a single-action vertical slice: it has exactly the dependencies it needs and is independently testable without pulling in the concerns of sibling actions it has never met and shouldn't have to.
 
 ### Boundary isolation
 
@@ -122,7 +122,7 @@ With MediumAPI, `GetBurgerEndpoint` and `DeleteBurgerEndpoint` are separate clas
 
 Using controllers ties your HTTP layer tightly to MVC concepts: `ControllerBase`, action filters, `[Authorize]`, `[ProducesResponseType]`, `ActionResult`, model binding. Swapping to a different endpoint model later is a significant rewrite because the framework surface is deeply embedded in the code - you didn't write a controller, MVC wrote most of it *through* you.
 
-`IEndpointAdapter` abstracts the *registration mechanism*, not the entire HTTP framework - concrete endpoints still use ASP.NET Core result types (`Results<Ok<T>, NotFound<...>>`), so they're not fully framework-agnostic (that was never the goal, and anyone selling you "fully framework-agnostic" in the same breath as "runs on ASP.NET Core" is selling something else too). What it does buy: the registration mechanism - currently Minimal API source-generated routing - can be replaced without touching any concrete endpoint implementation.
+`IEndpoint` abstracts the *registration mechanism*, not the entire HTTP framework - concrete endpoints still use ASP.NET Core result types (`Results<Ok<T>, NotFound<...>>`), so they're not fully framework-agnostic (that was never the goal, and anyone selling you "fully framework-agnostic" in the same breath as "runs on ASP.NET Core" is selling something else too). What it does buy: the registration mechanism - currently Minimal API source-generated routing - can be replaced without touching any concrete endpoint implementation.
 
 ### Testability
 
@@ -139,7 +139,7 @@ var result = await controller.GetPizzaAsync(42, CancellationToken.None);
 
 And even then, action filters do **not** run in a plain unit test - they only execute inside the full MVC pipeline, meaning the unit test doesn't faithfully represent runtime behavior. Testing filters requires a full integration test with `WebApplicationFactory`, at which point congratulations, your "unit" test takes longer to boot than the feature took to write.
 
-An `IEndpointAdapter` is a plain class:
+An `IEndpoint` is a plain class:
 
 ```csharp
 var endpoint = new GetPizzaEndpoint(mockManager.Object);
@@ -167,8 +167,8 @@ The `RonSijm.MediumAPI.Analyser` package ships a Roslyn analyzer that catches ro
 | `ENDPOINT003` | Error | A route constraint (`{id:int}`) does not match the `HandleAsync` parameter type |
 | `ENDPOINT004` | Warning | A route-registration lambda is not `static` - risks accidentally capturing startup state |
 | `ENDPOINT005` | Warning | `Pattern` is missing `[StringSyntax("Route")]`, disabling IDE route tooling |
-| `ENDPOINT007` | Error | An `IEndpointAdapter` implementation has no `HandleAsync` method |
-| `ENDPOINT008` | Warning | An `IEndpointAdapter` has metadata the source generator cannot evaluate at compile time |
+| `ENDPOINT007` | Error | An `IEndpoint` implementation has no `HandleAsync` method |
+| `ENDPOINT008` | Warning | An `IEndpoint` has metadata the source generator cannot evaluate at compile time |
 
 See `Examples/Diagnostics/` in this repository for a runnable project per diagnostic, each showing a violating case (suppressed via `<NoWarn>` so the demo project itself still builds cleanly, because even the cautionary tale has to compile) next to a valid case.
 
@@ -186,14 +186,14 @@ When a bug is introduced, *when* it gets caught has a large impact on the cost o
 
 A routing bug in a controller or a vanilla Minimal API may survive all the way to a QA report or a production incident if no test happens to hit that exact endpoint. The same class of bug in a MediumAPI endpoint is a build error that never leaves the developer's machine.
 
-It's worth naming directly: this isn't a claim that Minimal APIs are inherently better than controllers, or that this kind of analyzer could only ever be written for one or the other - an equivalent analyzer *could* be written for controller actions too. Nobody did, though, and "somebody could theoretically fix this" has never actually fixed anything. The point of MediumAPI is that pairing a small, uniform endpoint shape (`IEndpointAdapter`) with a purpose-built analyzer makes that verification cheap to build and apply consistently, in a way that ad-hoc lambdas or free-form controller actions don't naturally invite.
+It's worth naming directly: this isn't a claim that Minimal APIs are inherently better than controllers, or that this kind of analyzer could only ever be written for one or the other - an equivalent analyzer *could* be written for controller actions too. Nobody did, though, and "somebody could theoretically fix this" has never actually fixed anything. The point of MediumAPI is that pairing a small, uniform endpoint shape (`IEndpoint`) with a purpose-built analyzer makes that verification cheap to build and apply consistently, in a way that ad-hoc lambdas or free-form controller actions don't naturally invite.
 
 ## How registration works
 
 ```mermaid
 flowchart LR
     subgraph Author["Your code"]
-        E["FooEndpoint.cs<br/>: IEndpointAdapter"]
+        E["FooEndpoint.cs<br/>: IEndpoint"]
     end
 
     subgraph Compile["Compile time"]
@@ -219,12 +219,12 @@ flowchart LR
     Routing -. invokes .-> E
 ```
 
-At compile time, `EndpointRegistrationGenerator` scans for `IEndpointAdapter` implementations in the compilation and emits, into the consumer's root namespace:
+At compile time, `EndpointRegistrationGenerator` scans for `IEndpoint` implementations in the compilation and emits, into the consumer's root namespace:
 
 - `AddMediumApiEndpoints()` - a service-collection extension method.
 - `MapMediumApiEndpoints()` - wires every discovered endpoint into `IEndpointRouteBuilder` using `RequestDelegateFactory` and `ActivatorUtilities`, the same machinery ASP.NET Core itself uses under the hood for ordinary Minimal APIs.
 
-Discovery happens exactly once, at compile time: the generator inspects the compilation for `IEndpointAdapter` implementations and writes the registration code for each one it finds. That means the registration for a given endpoint lives in generated source next to the build output, not in someone's memory of a startup file — if a route stops working, the fix is "the class stopped compiling," not "someone quietly deleted a line two years ago." The generated source is a normal, inspectable file under `obj/.../Generated` - if you want to see exactly what gets executed for a given endpoint, you can open it and read it like any other generated code (e.g. EF Core migrations or `System.Text.Json` source-generated contexts), instead of trusting a `[ApiController]` attribute to have done the right thing somewhere in a framework assembly you'll never open.
+Discovery happens exactly once, at compile time: the generator inspects the compilation for `IEndpoint` implementations and writes the registration code for each one it finds. That means the registration for a given endpoint lives in generated source next to the build output, not in someone's memory of a startup file — if a route stops working, the fix is "the class stopped compiling," not "someone quietly deleted a line two years ago." The generated source is a normal, inspectable file under `obj/.../Generated` - if you want to see exactly what gets executed for a given endpoint, you can open it and read it like any other generated code (e.g. EF Core migrations or `System.Text.Json` source-generated contexts), instead of trusting a `[ApiController]` attribute to have done the right thing somewhere in a framework assembly you'll never open.
 
 ### Request flow
 
@@ -255,7 +255,8 @@ The request flow has exactly one hop: ASP.NET Core routing matches the pattern a
 
 | Component | Role |
 |---|---|
-| `IEndpointAdapter` | Author-facing contract (`Verb`, `Pattern`, optional `AuthorizationPolicy`) |
+| `IEndpoint` | Author-facing contract (`Verb`, `Pattern`, optional `AuthorizationPolicy`) |
+| `IGetEndpoint` / `IPostEndpoint` / ... | Per-verb sugar over `IEndpoint` with `Verb` pre-filled; `<TOut>` / `<TIn, TOut>` variants also pin down the `HandleAsync` signature |
 | `HttpVerb` | Verb enum used by the generator |
 | `EndpointRegistrationGenerator` | Source generator producing `AddMediumApiEndpoints` / `MapMediumApiEndpoints` |
 | `EndpointRouteAnalyzer` | Diagnostic analyzer (`ENDPOINT001`–`ENDPOINT008`) |
@@ -265,7 +266,7 @@ The request flow has exactly one hop: ASP.NET Core routing matches the pattern a
 
 MediumAPI is not free, and anyone telling you a new abstraction has zero cost is either lying or hasn't shipped it yet. Choosing it over plain controllers or vanilla Minimal APIs means accepting the following costs:
 
-- **A convention to learn.** Anyone touching the codebase needs to understand `IEndpointAdapter` and the generator before writing their first endpoint. Controllers and inline Minimal APIs are more widely documented and more familiar to newcomers - mostly because everyone has already been burned by them once, which counts as documentation.
+- **A convention to learn.** Anyone touching the codebase needs to understand `IEndpoint` and the generator before writing their first endpoint. Controllers and inline Minimal APIs are more widely documented and more familiar to newcomers - mostly because everyone has already been burned by them once, which counts as documentation.
 - **A generator/analyzer dependency.** The source generator and analyzer are part of your build; keeping them working across new .NET/Roslyn SDK versions is an ongoing (if small) maintenance cost, and bugs in generated code can be harder to debug than bugs in hand-written registration calls. Generated code doesn't argue back, but it also doesn't apologize.
 - **Still an ASP.NET Core Minimal API under the hood.** `HandleAsync` still returns ASP.NET Core result types. This is a registration-and-structure abstraction, not a full HTTP-framework abstraction - swapping the entire hosting model would still touch every endpoint. If you were hoping this finally frees you from ASP.NET Core itself, it doesn't, nothing reasonably does, and be suspicious of anything that claims otherwise.
 - **More files for simple CRUD.** One class per action is more files than one controller with several actions, or one file full of lambdas. For a handful of trivial routes, this can feel like more ceremony than it's worth. If your entire API is three routes, you may not need any of this, and that's fine - not every hill needs a flag planted on it.
@@ -275,7 +276,7 @@ The tradeoff pays off once you have enough endpoints that "does this route actua
 ## Usage
 
 1. Reference `RonSijm.MediumAPI` and add `RonSijm.MediumAPI.Analyser` as an analyzer (`OutputItemType="Analyzer"`, `ReferenceOutputAssembly="false"`).
-2. Implement `IEndpointAdapter` for each endpoint.
+2. Implement `IEndpoint` (or one of the per-verb `I*Endpoint` interfaces) for each endpoint.
 3. Call `builder.Services.AddMediumApiEndpoints()` and `app.MapMediumApiEndpoints()` during app setup.
 
 See `Examples/RonSijm.MediumAPI.Example` for a complete minimal host with an integration test, and `Examples/Diagnostics/` for one project per analyzer diagnostic - for when reading about a mistake is less convincing than watching the build fail because of it.

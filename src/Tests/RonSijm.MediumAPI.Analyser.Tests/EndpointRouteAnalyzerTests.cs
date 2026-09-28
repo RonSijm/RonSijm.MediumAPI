@@ -1,3 +1,4 @@
+using AwesomeAssertions;
 using Microsoft.CodeAnalysis;
 using Xunit;
 
@@ -18,7 +19,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Threading.Tasks;
 			using RonSijm.MediumAPI;
 
-			internal sealed class MissingParamEndpoint : IEndpointAdapter
+			internal sealed class MissingParamEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    [StringSyntax("Route")]
@@ -29,7 +30,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.Contains(diagnostics, d => d.Id == EndpointDiagnosticIds.RouteParameterMissingFromHandler);
+		diagnostics.Should().Contain(d => d.Id == EndpointDiagnosticIds.RouteParameterMissingFromHandler);
 	}
 
 	[Fact]
@@ -41,7 +42,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Threading.Tasks;
 			using RonSijm.MediumAPI;
 
-			internal sealed class ValidEndpoint : IEndpointAdapter
+			internal sealed class ValidEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    [StringSyntax("Route")]
@@ -52,7 +53,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.DoesNotContain(diagnostics, d => d.Id == EndpointDiagnosticIds.RouteParameterMissingFromHandler);
+		diagnostics.Should().NotContain(d => d.Id == EndpointDiagnosticIds.RouteParameterMissingFromHandler);
 	}
 
 	// ──────────────────────────────────────────────────────────────
@@ -68,7 +69,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Threading.Tasks;
 			using RonSijm.MediumAPI;
 
-			internal sealed class ExtraParamEndpoint : IEndpointAdapter
+			internal sealed class ExtraParamEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    [StringSyntax("Route")]
@@ -79,7 +80,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.Contains(diagnostics, d => d.Id == EndpointDiagnosticIds.HandlerParameterMissingFromRoute);
+		diagnostics.Should().Contain(d => d.Id == EndpointDiagnosticIds.HandlerParameterMissingFromRoute);
 	}
 
 	[Fact]
@@ -91,7 +92,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Threading.Tasks;
 			using RonSijm.MediumAPI;
 
-			internal sealed class ValidEndpoint : IEndpointAdapter
+			internal sealed class ValidEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    [StringSyntax("Route")]
@@ -102,7 +103,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.DoesNotContain(diagnostics, d => d.Id == EndpointDiagnosticIds.HandlerParameterMissingFromRoute);
+		diagnostics.Should().NotContain(d => d.Id == EndpointDiagnosticIds.HandlerParameterMissingFromRoute);
 	}
 
 	[Fact]
@@ -116,7 +117,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 			internal sealed record CreateItemRequest(string Name);
 
-			internal sealed class CreateItemEndpoint : IEndpointAdapter
+			internal sealed class CreateItemEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Post;
 			    [StringSyntax("Route")]
@@ -127,7 +128,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.DoesNotContain(diagnostics, d => d.Id == EndpointDiagnosticIds.HandlerParameterMissingFromRoute);
+		diagnostics.Should().NotContain(d => d.Id == EndpointDiagnosticIds.HandlerParameterMissingFromRoute);
 	}
 
 	// ──────────────────────────────────────────────────────────────
@@ -143,7 +144,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Threading.Tasks;
 			using RonSijm.MediumAPI;
 
-			internal sealed class TypeMismatchEndpoint : IEndpointAdapter
+			internal sealed class TypeMismatchEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    [StringSyntax("Route")]
@@ -154,7 +155,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.Contains(diagnostics, d => d.Id == EndpointDiagnosticIds.RouteConstraintTypeMismatch);
+		diagnostics.Should().Contain(d => d.Id == EndpointDiagnosticIds.RouteConstraintTypeMismatch);
 	}
 
 	[Fact]
@@ -166,7 +167,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Threading.Tasks;
 			using RonSijm.MediumAPI;
 
-			internal sealed class ValidEndpoint : IEndpointAdapter
+			internal sealed class ValidEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    [StringSyntax("Route")]
@@ -177,7 +178,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.DoesNotContain(diagnostics, d => d.Id == EndpointDiagnosticIds.RouteConstraintTypeMismatch);
+		diagnostics.Should().NotContain(d => d.Id == EndpointDiagnosticIds.RouteConstraintTypeMismatch);
 	}
 
 	// ──────────────────────────────────────────────────────────────
@@ -192,7 +193,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Threading.Tasks;
 			using RonSijm.MediumAPI;
 
-			internal sealed class NoStringSyntaxEndpoint : IEndpointAdapter
+			internal sealed class NoStringSyntaxEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    public string Pattern => "items";
@@ -202,7 +203,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.Contains(diagnostics, d => d.Id == EndpointDiagnosticIds.PatternPropertyMissingStringSyntaxAttribute);
+		diagnostics.Should().Contain(d => d.Id == EndpointDiagnosticIds.PatternPropertyMissingStringSyntaxAttribute);
 	}
 
 	[Fact]
@@ -214,7 +215,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Threading.Tasks;
 			using RonSijm.MediumAPI;
 
-			internal sealed class ValidEndpoint : IEndpointAdapter
+			internal sealed class ValidEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    [StringSyntax("Route")]
@@ -225,7 +226,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.DoesNotContain(diagnostics, d => d.Id == EndpointDiagnosticIds.PatternPropertyMissingStringSyntaxAttribute);
+		diagnostics.Should().NotContain(d => d.Id == EndpointDiagnosticIds.PatternPropertyMissingStringSyntaxAttribute);
 	}
 
 	// ──────────────────────────────────────────────────────────────
@@ -239,7 +240,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Diagnostics.CodeAnalysis;
 			using RonSijm.MediumAPI;
 
-			internal sealed class NoHandleAsyncEndpoint : IEndpointAdapter
+			internal sealed class NoHandleAsyncEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    [StringSyntax("Route")]
@@ -249,7 +250,7 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.Contains(diagnostics, d => d.Id == EndpointDiagnosticIds.HandleAsyncMethodMissing);
+		diagnostics.Should().Contain(d => d.Id == EndpointDiagnosticIds.HandleAsyncMethodMissing);
 	}
 
 	[Fact]
@@ -261,7 +262,7 @@ public sealed class EndpointRouteAnalyzerTests
 			using System.Threading.Tasks;
 			using RonSijm.MediumAPI;
 
-			internal sealed class ValidEndpoint : IEndpointAdapter
+			internal sealed class ValidEndpoint : IEndpoint
 			{
 			    public HttpVerb Verb => HttpVerb.Get;
 			    [StringSyntax("Route")]
@@ -272,6 +273,6 @@ public sealed class EndpointRouteAnalyzerTests
 
 		var diagnostics = await AnalyzerTestHelper.GetDiagnosticsAsync(source);
 
-		Assert.DoesNotContain(diagnostics, d => d.Id == EndpointDiagnosticIds.HandleAsyncMethodMissing);
+		diagnostics.Should().NotContain(d => d.Id == EndpointDiagnosticIds.HandleAsyncMethodMissing);
 	}
 }

@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace RonSijm.MediumAPI;
 
-public interface IEndpointAdapter
+public interface IEndpoint
 {
 	HttpVerb Verb { get; }
 

@@ -6,13 +6,9 @@ namespace Comparison.Controllers.Controllers;
 
 [ApiController]
 [Route("pizzas")]
-public sealed class PizzasController : ControllerBase
+public sealed class PizzasController(PizzaStore store) : ControllerBase
 {
-	private readonly PizzaStore store;
-
-	public PizzasController(PizzaStore store) => this.store = store;
-
-	[HttpGet]
+    [HttpGet]
 	public ActionResult<IEnumerable<Pizza>> GetAll() => Ok(store.GetAll());
 
 	[HttpGet("{id:int}")]

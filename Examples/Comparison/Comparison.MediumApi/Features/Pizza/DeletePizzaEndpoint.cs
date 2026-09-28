@@ -1,18 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
-using Comparison.MediumApi.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using RonSijm.MediumAPI;
 
-namespace Comparison.MediumApi.Endpoints.Pizzas;
+namespace Comparison.MediumApi.Features.Pizza;
 
-internal sealed class DeletePizzaEndpoint : IEndpointAdapter
+internal sealed class DeletePizzaEndpoint(PizzaStore store) : IDeleteEndpoint<int, Results<NoContent, NotFound>>
 {
-	private readonly PizzaStore store;
-
-	public DeletePizzaEndpoint(PizzaStore store) => this.store = store;
-
-	public HttpVerb Verb => HttpVerb.Delete;
-
 	[StringSyntax("Route")]
 	public string Pattern => "pizzas/{id:int}";
 

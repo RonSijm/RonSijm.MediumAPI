@@ -17,7 +17,7 @@ internal static class AnalyzerTestHelper
 		namespace RonSijm.MediumAPI
 		{
 		    public enum HttpVerb { Get, Post, Put, Patch, Delete }
-		    public interface IEndpointAdapter
+		    public interface IEndpoint
 		    {
 		        HttpVerb Verb { get; }
 		        string Pattern { get; }

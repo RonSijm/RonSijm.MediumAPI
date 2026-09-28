@@ -55,13 +55,13 @@ public sealed class EndpointRouteAnalyzer : DiagnosticAnalyzer
 		CreateDescriptor(
 			EndpointDiagnosticIds.PatternPropertyMissingStringSyntaxAttribute,
 			"Pattern property is missing [StringSyntax(\"Route\")] attribute",
-			"IEndpointAdapter.Pattern property should be decorated with [StringSyntax(\"Route\")] to enable IDE route tooling",
+			"IEndpoint.Pattern property should be decorated with [StringSyntax(\"Route\")] to enable IDE route tooling",
 			DiagnosticSeverity.Warning);
 
 	private static readonly DiagnosticDescriptor HandleAsyncMethodMissing =
 		CreateDescriptor(
 			EndpointDiagnosticIds.HandleAsyncMethodMissing,
-			"IEndpointAdapter implementation is missing a HandleAsync method",
+			"IEndpoint implementation is missing a HandleAsync method",
 			"Endpoint '{0}' must declare a public HandleAsync method",
 			DiagnosticSeverity.Error);
 
@@ -400,7 +400,7 @@ public sealed class EndpointRouteAnalyzer : DiagnosticAnalyzer
 			return;
 		}
 
-		if (!classSymbol.AllInterfaces.Any(i => i.Name == "IEndpointAdapter"))
+		if (!classSymbol.AllInterfaces.Any(i => i.Name == "IEndpoint"))
 		{
 			return;
 		}

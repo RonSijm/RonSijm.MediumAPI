@@ -1,3 +1,4 @@
+using AwesomeAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
@@ -15,6 +16,6 @@ public class HelloWorldEndpointTests(WebApplicationFactory<Program> factory)
 
 		response.EnsureSuccessStatusCode();
 		var content = await response.Content.ReadAsStringAsync();
-		Assert.Equal("\"Hello, World!\"", content);
+		content.Should().Be("\"Hello, World!\"");
 	}
 }

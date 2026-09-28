@@ -7,7 +7,7 @@ namespace Example.ENDPOINT001.RouteParameterMissingFromHandler;
 //
 // The route pattern declares {id:int}, but HandleAsync has no 'id' parameter.
 // The analyzer reports ENDPOINT001: Route parameter 'id' does not match any handler parameter.
-internal sealed class GetItemEndpoint : IEndpointAdapter
+internal sealed class GetItemEndpoint : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 
@@ -19,7 +19,7 @@ internal sealed class GetItemEndpoint : IEndpointAdapter
 }
 
 // ✅ Valid — route parameter matches handler parameter
-internal sealed class GetItemEndpointValid : IEndpointAdapter
+internal sealed class GetItemEndpointValid : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 

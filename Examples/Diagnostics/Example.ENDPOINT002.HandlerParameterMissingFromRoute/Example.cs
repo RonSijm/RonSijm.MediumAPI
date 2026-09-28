@@ -7,7 +7,7 @@ namespace Example.ENDPOINT002.HandlerParameterMissingFromRoute;
 //
 // HandleAsync declares 'int id', but the route "items" has no {id} segment.
 // The analyzer reports ENDPOINT002: Handler parameter 'id' is not present in the route.
-internal sealed class GetItemEndpoint : IEndpointAdapter
+internal sealed class GetItemEndpoint : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 
@@ -18,7 +18,7 @@ internal sealed class GetItemEndpoint : IEndpointAdapter
 }
 
 // ✅ Valid — handler parameter matches a route segment
-internal sealed class GetItemEndpointValid : IEndpointAdapter
+internal sealed class GetItemEndpointValid : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 

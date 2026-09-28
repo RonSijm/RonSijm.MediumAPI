@@ -1,7 +1,6 @@
 using System.Collections.Concurrent;
-using Comparison.Controllers.Models;
 
-namespace Comparison.Controllers.Data;
+namespace Comparison.MinimalApi.Features.Pizza;
 
 public sealed class PizzaStore
 {

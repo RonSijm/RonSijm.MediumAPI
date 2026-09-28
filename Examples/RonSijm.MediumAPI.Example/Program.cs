@@ -1,3 +1,4 @@
+using RonSijm.MediumAPI;
 using RonSijm.MediumAPI.Example;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,5 +1,6 @@
-using Comparison.MediumApi;
-using Comparison.MediumApi.Data;
+using Comparison.MediumApi.Features.Burger;
+using Comparison.MediumApi.Features.Pizza;
+using RonSijm.MediumAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 

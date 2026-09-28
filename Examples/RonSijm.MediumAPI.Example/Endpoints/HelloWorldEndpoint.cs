@@ -4,10 +4,8 @@ using RonSijm.MediumAPI;
 
 namespace RonSijm.MediumAPI.Example.Endpoints;
 
-internal sealed class HelloWorldEndpoint : IEndpointAdapter
+internal sealed class HelloWorldEndpoint : IGetEndpoint<Ok<string>>
 {
-	public HttpVerb Verb => HttpVerb.Get;
-
 	[StringSyntax("Route")]
 	public string Pattern => "hello";
 

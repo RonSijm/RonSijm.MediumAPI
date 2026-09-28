@@ -7,7 +7,7 @@ namespace Example.ENDPOINT003.RouteConstraintTypeMismatch;
 //
 // The route pattern declares {id:int}, but HandleAsync receives a string.
 // The analyzer reports ENDPOINT003: Route parameter 'id' uses constraint 'int', but handler parameter type is 'String'.
-internal sealed class GetItemEndpoint : IEndpointAdapter
+internal sealed class GetItemEndpoint : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 
@@ -19,7 +19,7 @@ internal sealed class GetItemEndpoint : IEndpointAdapter
 }
 
 // ✅ Valid — parameter type matches the route constraint
-internal sealed class GetItemEndpointValid : IEndpointAdapter
+internal sealed class GetItemEndpointValid : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 

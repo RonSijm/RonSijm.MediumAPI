@@ -1,19 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
-using Comparison.MediumApi.Data;
-using Comparison.MediumApi.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using RonSijm.MediumAPI;
 
-namespace Comparison.MediumApi.Endpoints.Pizzas;
+namespace Comparison.MediumApi.Features.Pizza;
 
-internal sealed class CreatePizzaEndpoint : IEndpointAdapter
+internal sealed class CreatePizzaEndpoint(PizzaStore store) : IPostEndpoint<CreatePizzaRequest, Created<Pizza>>
 {
-	private readonly PizzaStore store;
-
-	public CreatePizzaEndpoint(PizzaStore store) => this.store = store;
-
-	public HttpVerb Verb => HttpVerb.Post;
-
 	[StringSyntax("Route")]
 	public string Pattern => "pizzas";
 

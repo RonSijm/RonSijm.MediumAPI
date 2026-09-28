@@ -4,7 +4,7 @@
 
   <!-- Shared configuration inherited by all diagnostic example projects -->
   <ItemGroup>
-    <!-- Required because the source generator emits MapMediumApiEndpoints which uses ASP.NET Core types -->
+    <!-- Required because RonSijm.MediumAPI's MapMediumApiEndpoints() uses ASP.NET Core types -->
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <ProjectReference Include="..\..\..\src\Main\RonSijm.MediumAPI\RonSijm.MediumAPI.csproj" />
     <ProjectReference Include="..\..\..\src\Main\RonSijm.MediumAPI.Analyser\RonSijm.MediumAPI.Analyser.csproj"

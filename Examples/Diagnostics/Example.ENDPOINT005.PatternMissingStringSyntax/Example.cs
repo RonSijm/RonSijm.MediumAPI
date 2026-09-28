@@ -7,8 +7,8 @@ namespace Example.ENDPOINT005.PatternMissingStringSyntax;
 //
 // Without the attribute, IDE route tooling (syntax highlighting, IntelliSense)
 // does not recognise the string as a route pattern.
-// The analyzer reports ENDPOINT005: IEndpointAdapter.Pattern property should be decorated with [StringSyntax("Route")].
-internal sealed class GetItemEndpoint : IEndpointAdapter
+// The analyzer reports ENDPOINT005: IEndpoint.Pattern property should be decorated with [StringSyntax("Route")].
+internal sealed class GetItemEndpoint : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 
@@ -19,7 +19,7 @@ internal sealed class GetItemEndpoint : IEndpointAdapter
 }
 
 // ✅ Valid — attribute is present
-internal sealed class GetItemEndpointValid : IEndpointAdapter
+internal sealed class GetItemEndpointValid : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 

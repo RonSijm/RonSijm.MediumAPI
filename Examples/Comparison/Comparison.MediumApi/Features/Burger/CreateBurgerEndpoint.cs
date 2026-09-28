@@ -1,19 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
-using Comparison.MediumApi.Data;
-using Comparison.MediumApi.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using RonSijm.MediumAPI;
 
-namespace Comparison.MediumApi.Endpoints.Burgers;
+namespace Comparison.MediumApi.Features.Burger;
 
-internal sealed class CreateBurgerEndpoint : IEndpointAdapter
+internal sealed class CreateBurgerEndpoint(BurgerStore store) : IPostEndpoint<CreateBurgerRequest, Created<Burger>>
 {
-	private readonly BurgerStore store;
-
-	public CreateBurgerEndpoint(BurgerStore store) => this.store = store;
-
-	public HttpVerb Verb => HttpVerb.Post;
-
 	[StringSyntax("Route")]
 	public string Pattern => "burgers";
 

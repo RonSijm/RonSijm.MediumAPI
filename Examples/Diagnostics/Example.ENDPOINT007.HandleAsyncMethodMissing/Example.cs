@@ -3,12 +3,12 @@ using RonSijm.MediumAPI;
 
 namespace Example.ENDPOINT007.HandleAsyncMethodMissing;
 
-// ❌ ENDPOINT007 — IEndpointAdapter implementation is missing a HandleAsync method.
+// ❌ ENDPOINT007 — IEndpoint implementation is missing a HandleAsync method.
 //
 // The source generator uses reflection to locate HandleAsync at runtime.
 // Without it, MapMediumApiEndpoints() will throw a NullReferenceException.
 // The analyzer reports ENDPOINT007: Endpoint 'GetItemEndpoint' must declare a public HandleAsync method.
-internal sealed class GetItemEndpoint : IEndpointAdapter
+internal sealed class GetItemEndpoint : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 
@@ -19,7 +19,7 @@ internal sealed class GetItemEndpoint : IEndpointAdapter
 }
 
 // ✅ Valid — HandleAsync is declared
-internal sealed class GetItemEndpointValid : IEndpointAdapter
+internal sealed class GetItemEndpointValid : IEndpoint
 {
 	public HttpVerb Verb => HttpVerb.Get;
 
