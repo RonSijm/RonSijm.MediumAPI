@@ -1,0 +1,46 @@
+<Solution>
+  <Folder Name="/Examples/Features/ContractInspection/">
+    <Project Path="Features/ContractInspection/RonSijm.MediumAPI.ContractsExample/RonSijm.MediumAPI.ContractsExample.csproj" />
+    <Project Path="Features/ContractInspection/RonSijm.MediumAPI.ContractsExample.IntegrationTest/RonSijm.MediumAPI.ContractsExample.IntegrationTest.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Features/Discovery/">
+    <Project Path="Features/Discovery/RonSijm.MediumAPI.FeatureExamples/RonSijm.MediumAPI.FeatureExamples.csproj" />
+    <Project Path="Features/Discovery/RonSijm.MediumAPI.FeatureExamples.IntegrationTest/RonSijm.MediumAPI.FeatureExamples.IntegrationTest.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Features/EndpointRegistration/">
+    <Project Path="Features/EndpointRegistration/RonSijm.MediumAPI.ScaffoldingExample/RonSijm.MediumAPI.ScaffoldingExample.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Features/Endpoints/">
+    <Project Path="Features/Endpoints/RonSijm.MediumAPI.EndpointNamesExample/RonSijm.MediumAPI.EndpointNamesExample.csproj" />
+    <Project Path="Features/Endpoints/RonSijm.MediumAPI.EndpointNamesExample.IntegrationTest/RonSijm.MediumAPI.EndpointNamesExample.IntegrationTest.csproj" />
+    <Project Path="Features/Endpoints/RonSijm.MediumAPI.Example/RonSijm.MediumAPI.Example.csproj" />
+    <Project Path="Features/Endpoints/RonSijm.MediumAPI.Example.IntegrationTest/RonSijm.MediumAPI.Example.IntegrationTest.csproj" />
+    <Project Path="Features/Endpoints/Comparison/Comparison.Controllers/Comparison.Controllers.csproj" />
+    <Project Path="Features/Endpoints/Comparison/Comparison.MinimalApi/Comparison.MinimalApi.csproj" />
+    <Project Path="Features/Endpoints/Comparison/Comparison.MediumApi/Comparison.MediumApi.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Features/Filters/">
+    <Project Path="Features/Filters/RonSijm.MediumAPI.ExceptionFiltersExample/RonSijm.MediumAPI.ExceptionFiltersExample.csproj" />
+    <Project Path="Features/Filters/RonSijm.MediumAPI.ExceptionFiltersExample.IntegrationTest/RonSijm.MediumAPI.ExceptionFiltersExample.IntegrationTest.csproj" />
+    <Project Path="Features/Filters/RonSijm.MediumAPI.PipelineExample/RonSijm.MediumAPI.PipelineExample.csproj" />
+    <Project Path="Features/Filters/RonSijm.MediumAPI.PipelineExample.IntegrationTest/RonSijm.MediumAPI.PipelineExample.IntegrationTest.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Features/NamespaceGroups/">
+    <Project Path="Features/NamespaceGroups/RonSijm.MediumAPI.GroupPoliciesExample/RonSijm.MediumAPI.GroupPoliciesExample.csproj" />
+    <Project Path="Features/NamespaceGroups/RonSijm.MediumAPI.GroupPoliciesExample.IntegrationTest/RonSijm.MediumAPI.GroupPoliciesExample.IntegrationTest.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Features/Responses/">
+    <Project Path="Features/Responses/RonSijm.MediumAPI.TypedResultsExample/RonSijm.MediumAPI.TypedResultsExample.csproj" />
+    <Project Path="Features/Responses/RonSijm.MediumAPI.TypedResultsExample.IntegrationTest/RonSijm.MediumAPI.TypedResultsExample.IntegrationTest.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Features/RouteAnalysis/">
+    <Project Path="Features/RouteAnalysis/Diagnostics/Example.ENDPOINT001.RouteParameterMissingFromHandler/Example.ENDPOINT001.RouteParameterMissingFromHandler.csproj" />
+    <Project Path="Features/RouteAnalysis/Diagnostics/Example.ENDPOINT002.HandlerParameterMissingFromRoute/Example.ENDPOINT002.HandlerParameterMissingFromRoute.csproj" />
+    <Project Path="Features/RouteAnalysis/Diagnostics/Example.ENDPOINT003.RouteConstraintTypeMismatch/Example.ENDPOINT003.RouteConstraintTypeMismatch.csproj" />
+    <Project Path="Features/RouteAnalysis/Diagnostics/Example.ENDPOINT005.PatternMissingStringSyntax/Example.ENDPOINT005.PatternMissingStringSyntax.csproj" />
+    <Project Path="Features/RouteAnalysis/Diagnostics/Example.ENDPOINT007.HandleAsyncMethodMissing/Example.ENDPOINT007.HandleAsyncMethodMissing.csproj" />
+  </Folder>
+  <Folder Name="/Examples/Features/RouteSyntax/">
+    <Project Path="Features/RouteSyntax/RonSijm.MediumAPI.AuthoringExample/RonSijm.MediumAPI.AuthoringExample.csproj" />
+  </Folder>
+</Solution>

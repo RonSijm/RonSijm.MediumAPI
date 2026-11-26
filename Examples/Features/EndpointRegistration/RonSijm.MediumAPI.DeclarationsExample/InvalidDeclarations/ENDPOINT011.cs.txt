@@ -1,0 +1,17 @@
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using RonSijm.MediumAPI;
+
+namespace DeclarationSnippets;
+
+// Excluded from compilation. Configure must be public, static and synchronous.
+internal sealed class InstanceConfigurationEndpoint : IGetEndpoint
+{
+	[StringSyntax("Route")]
+	public string Pattern => "/invalid/configuration";
+
+	public IResult HandleAsync() => TypedResults.Ok("invalid declaration");
+
+	public void Configure(RouteHandlerBuilder endpoint) => endpoint.WithTags("invalid");
+}

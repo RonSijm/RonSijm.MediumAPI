@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Main/">
+    <Project Path="Main/RonSijm.MediumAPI/RonSijm.MediumAPI.csproj" />
+    <Project Path="Main/RonSijm.MediumAPI.Analyser/RonSijm.MediumAPI.Analyser.csproj" />
+    <Project Path="Main/RonSijm.MediumAPI.CodeFixes/RonSijm.MediumAPI.CodeFixes.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/RonSijm.MediumAPI.Analyser.Tests/RonSijm.MediumAPI.Analyser.Tests.csproj" />
+    <Project Path="Tests/RonSijm.MediumAPI.CodeFixes.Tests/RonSijm.MediumAPI.CodeFixes.Tests.csproj" />
+  </Folder>
+</Solution>

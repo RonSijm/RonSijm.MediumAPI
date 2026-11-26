@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "RonSijm.MediumAPI",
+  "classifications": [ "Web", "API", "MediumAPI" ],
+  "identity": "RonSijm.MediumAPI.Item.NamespaceGroup",
+  "name": "MediumAPI namespace group definition",
+  "shortName": "mediumapi-group",
+  "sourceName": "MediumApiGroupDefinition",
+  "preferNameDirectory": false,
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "symbols": {
+    "namespace": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "The C# namespace owned by this definition.",
+      "replaces": "MediumApi.TemplateNamespace",
+      "defaultValue": "Sample.Api.Endpoints.Api"
+    },
+    "prefix": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "The route prefix added by this group; use an empty prefix when preserving full endpoint patterns.",
+      "replaces": "__MediumApiPrefix__",
+      "defaultValue": "/api"
+    }
+  },
+  "primaryOutputs": [
+    { "path": "MediumApiGroupDefinition.cs" }
+  ]
+}

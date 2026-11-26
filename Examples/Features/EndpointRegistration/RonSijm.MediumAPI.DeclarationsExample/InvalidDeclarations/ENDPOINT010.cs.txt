@@ -1,0 +1,14 @@
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Http;
+using RonSijm.MediumAPI;
+
+namespace DeclarationSnippets;
+
+// Excluded from compilation. A static handler is not an endpoint instance method.
+internal sealed class StaticHandlerEndpoint : IGetEndpoint
+{
+	[StringSyntax("Route")]
+	public string Pattern => "/invalid/static-handler";
+
+	public static IResult HandleAsync() => TypedResults.Ok("invalid declaration");
+}

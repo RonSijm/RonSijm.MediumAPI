@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Comparison.MinimalApi": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:10189;http://localhost:10190"
+    }
+  }
+}

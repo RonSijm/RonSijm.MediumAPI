@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "RonSijm.MediumAPI.AliasMountsExample": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:54887;http://localhost:54889"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Http;
+using RonSijm.MediumAPI;
+
+namespace DeclarationSnippets;
+
+// Excluded from compilation. The generated top-level class cannot name this type.
+file sealed class FileLocalEndpoint : IGetEndpoint
+{
+	[StringSyntax("Route")]
+	public string Pattern => "/invalid/file-local";
+
+	public IResult HandleAsync() => TypedResults.Ok("invalid declaration");
+}

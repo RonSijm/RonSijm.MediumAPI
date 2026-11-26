@@ -1,0 +1,13 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using RonSijm.MediumAPI;
+
+namespace DeclarationSnippets;
+
+// Excluded from compilation. Map is valid, but ShouldMap has the wrong parameter.
+internal sealed class InvalidConditionGroupDefinition : INamespaceEndpointGroup
+{
+	public static RouteGroupBuilder Map(IEndpointRouteBuilder endpoints) => endpoints.MapGroup("/invalid");
+
+	public static bool ShouldMap(string configurationKey) => true;
+}

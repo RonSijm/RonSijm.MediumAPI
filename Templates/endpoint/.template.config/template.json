@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "RonSijm.MediumAPI",
+  "classifications": [ "Web", "API", "MediumAPI" ],
+  "identity": "RonSijm.MediumAPI.Item.Endpoint",
+  "name": "MediumAPI endpoint class",
+  "shortName": "mediumapi-endpoint",
+  "sourceName": "MediumApiEndpoint",
+  "preferNameDirectory": false,
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "symbols": {
+    "namespace": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "The C# namespace that determines endpoint group ownership.",
+      "replaces": "MediumApi.TemplateNamespace",
+      "defaultValue": "Sample.Api.Endpoints.Api"
+    },
+    "route": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "The relative route pattern. Add handler parameters for any route tokens after generation.",
+      "replaces": "__MediumApiRoute__",
+      "defaultValue": "/sample"
+    },
+    "verb": {
+      "type": "parameter",
+      "datatype": "choice",
+      "description": "The HTTP verb represented by the endpoint interface.",
+      "replaces": "__MediumApiVerb__",
+      "defaultValue": "Get",
+      "choices": [
+        { "choice": "Get", "description": "IGetEndpoint" },
+        { "choice": "Post", "description": "IPostEndpoint" },
+        { "choice": "Put", "description": "IPutEndpoint" },
+        { "choice": "Patch", "description": "IPatchEndpoint" },
+        { "choice": "Delete", "description": "IDeleteEndpoint" },
+        { "choice": "Head", "description": "IHeadEndpoint" },
+        { "choice": "Options", "description": "IOptionsEndpoint" },
+        { "choice": "Trace", "description": "ITraceEndpoint" }
+      ]
+    }
+  },
+  "primaryOutputs": [
+    { "path": "MediumApiEndpoint.cs" }
+  ]
+}

@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<!-- Suppress ENDPOINT005 so this demonstration project still builds -->
+		<NoWarn>ENDPOINT005;ENDPOINT007</NoWarn>
+	</PropertyGroup>
+</Project>
