@@ -1,5 +1,8 @@
 # RonSijm.MediumAPI
 
+For NuGet package builds, versioning and trusted publishing setup, see
+[building and publishing NuGet packages](Docs/nuget-publishing.md).
+
 Name an existing static native filter factory by deriving from `EndpointFilterFactoryAttribute<TFactory>`. Application aliases preserve fixed Configure/Create dispatch and original handler arguments. See [factory aliases](Docs/factory-aliases.md).
 
 Give an existing endpoint filter an application-owned attribute name by deriving from `EndpointFilterAttribute<TFilter>`. Named declarations keep fixed filter selection, native activation and the existing registration phase. See [filter aliases](Docs/filter-aliases.md).

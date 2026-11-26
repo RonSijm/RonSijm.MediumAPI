@@ -93,7 +93,7 @@ dotnet test Examples/Features/Metadata/RonSijm.MediumAPI.OutputCachingExample.In
 dotnet test Examples/Features/RoutePatterns/RonSijm.MediumAPI.OptionalDefaultsExample.IntegrationTest/RonSijm.MediumAPI.OptionalDefaultsExample.IntegrationTest.csproj
 ```
 
-These are source-development commands, not package-release instructions. Package publication, signing, license metadata and a supported SDK matrix require separate decisions.
+These are source-development commands. See [building and publishing NuGet packages](nuget-publishing.md) for package versions, release builds and trusted publishing setup. Package signing, license metadata and a broader supported SDK matrix remain separate decisions.
 
 ## Current verification record
 

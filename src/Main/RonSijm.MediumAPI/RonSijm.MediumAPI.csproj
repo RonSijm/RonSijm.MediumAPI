@@ -4,6 +4,8 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<Description>A class-based endpoint framework for ASP.NET Core Minimal APIs.</Description>
+		<PackageTags>aspnetcore;minimal-api;endpoints</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -1,0 +1,61 @@
+name: Build and Publish NuGet Packages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Restore
+        run: dotnet restore src/RonSijm.MediumAPI.slnx
+
+      - name: Build
+        run: dotnet build src/RonSijm.MediumAPI.slnx -c Release --no-restore -p:ContinuousIntegrationBuild=true
+
+      - name: Test
+        run: dotnet test src/RonSijm.MediumAPI.slnx -c Release --no-build --no-restore
+
+      - name: Build NuGet packages
+        run: dotnet pack src/RonSijm.MediumAPI.slnx -c Release --no-build --no-restore -p:ContinuousIntegrationBuild=true -o "$GITHUB_WORKSPACE/packages"
+
+      - name: Upload NuGet packages
+        uses: actions/upload-artifact@v7
+        with:
+          name: nuget-packages
+          path: packages/*.nupkg
+          if-no-files-found: error
+
+      - name: Log in to NuGet with trusted publishing
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: Ron.Sijm
+
+      - name: Publish to NuGet
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: dotnet nuget push "$GITHUB_WORKSPACE/packages/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY" --skip-duplicate
